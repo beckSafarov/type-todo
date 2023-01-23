@@ -1,0 +1,66 @@
+.container{
+  padding: 100px 80px;
+  // background: #ccc;
+}
+
+@mixin button{
+  cursor: pointer;
+  padding: 5px 20px;
+  border: none;
+  background: #333;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.tasksContainer{
+  position: relative;
+  max-width: 500px;
+  height: 600px;
+  overflow-y: scroll;
+  margin: 0 auto;
+  padding: 20px 20px 50px 20px;
+  background: #f4f4f4;
+  border-radius: 10px;
+  // background: green;
+}
+
+.inputContainer{
+  padding-top: 20px;
+  background: inherit;
+  display: flex; 
+  gap: 10px;
+  input{
+    background: inherit;
+    width: 100%; 
+    border: none; 
+    outline: none;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+  }
+  button{
+    @include button;
+  }
+}
+
+.btn{
+  @include button;
+  position: absolute; 
+  left: 45%;
+  margin: 0 auto;
+  bottom: 10px;
+}
+
+.tasksList{
+  display: flex;
+  padding-top: 20px;
+  flex-direction: column;
+  gap: 10px;
+  .taskText{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .icon{
+      cursor: pointer;
+    }
+  }
+}
