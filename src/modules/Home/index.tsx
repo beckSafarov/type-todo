@@ -1,32 +1,47 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import s from './Home.module.scss'
-
-type TaskType = {title: String, date?: Date, done?: Boolean}
-interface Task {title: String, date?: Date, done?: Boolean}
+import { v4 as uuidv4 } from 'uuid'
+type TaskType = { id: string, title: String; date?: Date; done?: Boolean }
+interface Task {id: string, title: String, date?: Date, done?: Boolean}
 interface Event {target: {value: string}}
+interface KeyBoardEvent {code: string}
 
 export default function Home() {
   const [tasks, setTasks] = useState(Array<TaskType>)
   const [newTask, setNewTask] = useState({title: ''})
-
+  
+  useEffect(()=>{
+    window.addEventListener('keyup', handleKeyUp)
+    return ()=>window.removeEventListener('keyup', handleKeyUp)
+  },[newTask])
+  
+ 
   const handleTaskChange = (e: Event) => setNewTask({title: e.target.value})
 
+  const handleToggleTask = (task: Task) => {
+    setTasks((tasks: TaskType[]) => {
+      return tasks.map((currTask: Task) => {
+        return task.id === currTask.id
+          ? { ...currTask, done: !currTask.done }
+          : currTask
+      })
+    })
+  }
+
   const handleTaskAdd = () => {
-    if(!newTask) return
+    if(!newTask.title) return
     setTasks([
       ...tasks,
-      { title: newTask.title, date: new Date(), done: false },
+      { id: uuidv4(), title: newTask.title, date: new Date(), done: false },
     ])
     setNewTask({ title: '' })
   }
-  
-  // const handleTaskToggle = ({task:Task}) => {
-  //   setTasks()
-  // }
 
-  const handleClearTasks = () => {
-    window.confirm('Are you sure?') && setTasks([])
+  const handleKeyUp = (e: KeyBoardEvent) => {
+    if (e.code === 'Enter' && newTask.title) handleTaskAdd()
   }
+
+  const handleClearTasks = () => setTasks([])
 
   return (
     <div className={s.container}>
@@ -46,12 +61,22 @@ export default function Home() {
             <div className={s.taskText} key={i}>
               {!task.done ? (
                 <>
-                  <span className={s.icon}>🔘</span>
+                  <span
+                    onClick={() => handleToggleTask(task)}
+                    className={s.icon}
+                  >
+                    🔘
+                  </span>
                   <span>{task.title}</span>
                 </>
               ) : (
                 <>
-                  <span className={s.icon}>☑️</span>
+                  <span
+                    onClick={() => handleToggleTask(task)}
+                    className={s.icon}
+                  >
+                    ☑️
+                  </span>
                   <del>{task.title}</del>
                 </>
               )}
