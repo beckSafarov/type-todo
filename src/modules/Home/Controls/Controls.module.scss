@@ -1,0 +1,28 @@
+.controls{
+  margin: 10px 0;
+  .controlsMenu {
+      display: flex;
+      border: 1px solid #ccc;
+      width: fit-content;
+  
+      .controlTabBtn {
+        padding: 10px 20px;
+        cursor: pointer;
+        background: inherit;
+        border: none;
+      }
+  
+      .controlTabBtn.active {
+        background: #333;
+        color: #fff;
+      }
+    }
+    .controlsOptions {
+      padding: 10px 0;
+      .row{
+        padding: 10px 0;
+        display: flex;
+        gap: 10px;
+      }
+    }
+}
