@@ -1,8 +1,8 @@
 export interface Task {
   id: string
   title: String
-  date?: Date
-  done?: Boolean
+  date: Date
+  done: Boolean
 }
 export interface Event {
   target: { value: string }

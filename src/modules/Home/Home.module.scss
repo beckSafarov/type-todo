@@ -68,12 +68,19 @@
 
     .taskText {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 10px;
-
-      .icon {
-        cursor: pointer;
+      .leftSide{
+        display: flex;
+        gap: 10px;
+        .icon {
+          cursor: pointer;
+        }
       }
+      .date{
+        color: #808080;
+      }
+
     }
   }
   .btn {
