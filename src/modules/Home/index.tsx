@@ -1,25 +1,23 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import s from './Home.module.scss'
 import { v4 as uuidv4 } from 'uuid'
-import Controls from './Controls';
-type TaskType = { id: string, title: String; date?: Date; done?: Boolean }
-interface Task {id: string, title: String, date?: Date, done?: Boolean}
-interface Event {target: {value: string}}
-interface KeyBoardEvent {code: string}
+import Controls from './Controls'
+import { Task, Event, KeyBoardEvent } from '../../interfaces'
+import { TaskType } from '../../types'
+import { TaskBlock } from './TaskBlock'
 
 export default function Home() {
   const [tasks, setTasks] = useState(Array<TaskType>)
-  const [newTask, setNewTask] = useState({title: ''})
-  const [sort, setSort] = useState({by: 'date', order: 'desc'})
-  const [filter, setFilter] = useState({by: 'none'})
+  const [newTask, setNewTask] = useState({ title: '' })
+  const [sort, setSort] = useState({ by: 'date', order: 'desc' })
+  const [filter, setFilter] = useState({ by: 'none' })
 
-  useEffect(()=>{
+  useEffect(() => {
     window.addEventListener('keyup', handleKeyUp)
-    return ()=>window.removeEventListener('keyup', handleKeyUp)
-  },[newTask])
-  
- 
-  const handleTaskChange = (e: Event) => setNewTask({title: e.target.value})
+    return () => window.removeEventListener('keyup', handleKeyUp)
+  }, [newTask])
+
+  const handleTaskChange = (e: Event) => setNewTask({ title: e.target.value })
 
   const handleToggleTask = (task: Task) => {
     setTasks((tasks: TaskType[]) => {
@@ -32,7 +30,7 @@ export default function Home() {
   }
 
   const handleTaskAdd = () => {
-    if(!newTask.title) return
+    if (!newTask.title) return
     setTasks([
       ...tasks,
       { id: uuidv4(), title: newTask.title, date: new Date(), done: false },
@@ -44,11 +42,11 @@ export default function Home() {
     if (e.code === 'Enter' && newTask.title) handleTaskAdd()
   }
 
-  const sortTasks = (currTasks:Task[]):Task[] => { 
-    if(sort.by === 'status'){
+  const sortTasks = (currTasks: Task[]): Task[] => {
+    if (sort.by === 'status') {
       const undones = currTasks.filter((task: Task) => !task.done)
       const dones = currTasks.filter((task: Task) => task.done)
-      if(sort.order === 'asc'){
+      if (sort.order === 'asc') {
         return [...undones, ...dones]
       }
       return [...dones, ...undones]
@@ -56,7 +54,7 @@ export default function Home() {
     return currTasks
   }
 
-  const getTasks = useCallback(() => {
+  const tasksSorted = useMemo(() => {
     return sortTasks(tasks)
   }, [tasks, sort])
 
@@ -66,7 +64,7 @@ export default function Home() {
     <div className={s.container}>
       <div className={s.tasksContainer}>
         <h2>Enter today's tasks!</h2>
-        <Controls onSortChange={setSort} onFilterChange={setFilter}/>
+        <Controls onSortChange={setSort} onFilterChange={setFilter} />
         <div className={s.inputContainer}>
           <input
             value={newTask.title}
@@ -76,30 +74,8 @@ export default function Home() {
           />
         </div>
         <div className={s.tasksList}>
-          {getTasks().map((task: Task, i: number) => (
-            <div className={s.taskText} key={i}>
-              {!task.done ? (
-                <>
-                  <span
-                    onClick={() => handleToggleTask(task)}
-                    className={s.icon}
-                  >
-                    🔘
-                  </span>
-                  <span>{task.title}</span>
-                </>
-              ) : (
-                <>
-                  <span
-                    onClick={() => handleToggleTask(task)}
-                    className={s.icon}
-                  >
-                    ☑️
-                  </span>
-                  <del>{task.title}</del>
-                </>
-              )}
-            </div>
+          {tasksSorted.map((task: Task, i: number) => (
+            <TaskBlock task={task} onToggle={handleToggleTask} key={i}/>
           ))}
         </div>
         <button className={s.btn} onClick={handleClearTasks}>
