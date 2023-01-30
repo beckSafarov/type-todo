@@ -1,15 +1,7 @@
 import React, { useState } from 'react'
 import s from './Controls.module.scss'
-
-interface CheckOption {
-  value: string
-  name: string
-  label: string
-}
-type Props = {
-  onSortChange: React.Dispatch<
-    React.SetStateAction<{ by: string; order: string }>>
-}
+import { CheckOption } from '../../../interfaces';
+import { SortOptionsProps } from '../../../types';
 
 const sortRows = {
   main: [
@@ -23,7 +15,7 @@ const sortRows = {
   ],
 }
 
-const SortOptions = ({onSortChange}:Props) => {
+const SortOptions = ({onSortChange}:SortOptionsProps) => {
   const [sort, setSort] = useState({
     by: 'date',
     order: 'desc',

@@ -1,17 +1,11 @@
 import React, { useState } from 'react'
+import { ControlsProps } from '../../../types'
 import { capitalize } from '../../../utils'
 import s from './Controls.module.scss'
 import FilterOptions from './FilterOptions'
 import SortOptions from './SortOptions'
 
-type Props = {
-  onSortChange: React.Dispatch<
-    React.SetStateAction<{ by: string; order: string }>
-  >
-  onFilterChange: React.Dispatch<React.SetStateAction<{ by: string }>>
-}
-
-const Controls = ({ onSortChange, onFilterChange }: Props) => {
+const Controls = ({ onSortChange, onFilterChange }: ControlsProps) => {
   const [activeTab, setActiveTab] = useState('sort')
 
   const getTabClass = (currTab: string) => {

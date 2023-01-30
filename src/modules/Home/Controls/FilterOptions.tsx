@@ -1,22 +1,15 @@
 import React, { useState } from 'react'
 import s from './Controls.module.scss'
+import { CheckOption } from '../../../interfaces'
+import { FilterOptionsProps } from '../../../types'
 
-type Props = {
-  onFilterChange: React.Dispatch<React.SetStateAction<{ by: string }>>
-}
-
-interface CheckOption {
-  value: string
-  name: string
-  label: string
-}
 const filterOptions = [
   { value: 'comp', name: 'Complete', label: 'Complete' },
   { value: 'incomp', name: 'Incomplete', label: 'Incomplete' },
   { value: 'none', name: 'none', label: 'No Filter' },
 ]
 
-const FilterOptions = ({onFilterChange}:Props) => {
+const FilterOptions = ({onFilterChange}:FilterOptionsProps) => {
   const [filter, setFilter] = useState({ by: 'none' })
 
   const handleChange = (value:string) => {
