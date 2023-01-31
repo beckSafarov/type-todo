@@ -11,3 +11,5 @@ export type FilterOptionsProps = {
 }
 
 export type ControlsProps = SortOptionsProps & FilterOptionsProps
+
+export type FilterTypes= 'complete' | 'incomplete' | 'none'

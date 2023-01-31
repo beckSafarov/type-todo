@@ -4,8 +4,8 @@ import { CheckOption } from '../../../interfaces'
 import { FilterOptionsProps } from '../../../types'
 
 const filterOptions = [
-  { value: 'comp', name: 'Complete', label: 'Complete' },
-  { value: 'incomp', name: 'Incomplete', label: 'Incomplete' },
+  { value: 'complete', name: 'Complete', label: 'Complete' },
+  { value: 'incomplete', name: 'Incomplete', label: 'Incomplete' },
   { value: 'none', name: 'none', label: 'No Filter' },
 ]
 
@@ -25,7 +25,8 @@ const FilterOptions = ({onFilterChange}:FilterOptionsProps) => {
             value={option.value}
             name={option.name}
             type='radio'
-            onClick={() => handleChange(option.value)}
+            onChange={() => handleChange(option.value)}
+            // onClick={() => handleChange(option.value)}
             checked={filter.by === option.value}
           />
           <label htmlFor={option.name}> {option.label}</label>

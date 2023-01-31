@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import s from './Home.module.scss'
 import { v4 as uuidv4 } from 'uuid'
 import Controls from './Controls'
 import { Task, Event, KeyBoardEvent } from '../../interfaces'
 import { TaskType } from '../../types'
 import { TaskBlock } from './TaskBlock'
+import { filterTasks, sortTasks } from '../../utils'
 
 export default function Home() {
   const [tasks, setTasks] = useState(Array<TaskType>)
@@ -42,21 +43,11 @@ export default function Home() {
     if (e.code === 'Enter' && newTask.title) handleTaskAdd()
   }
 
-  const sortTasks = (currTasks: Task[]): Task[] => {
-    if (sort.by === 'status') {
-      const undones = currTasks.filter((task: Task) => !task.done)
-      const dones = currTasks.filter((task: Task) => task.done)
-      if (sort.order === 'asc') {
-        return [...undones, ...dones]
-      }
-      return [...dones, ...undones]
-    }
-    return currTasks
-  }
-
   const tasksSorted = useMemo(() => {
-    return sortTasks(tasks)
-  }, [tasks, sort])
+    const sortedTasks = sortTasks(sort, tasks)
+    const filteredTasks = filterTasks(filter, sortedTasks)
+    return filteredTasks
+  }, [tasks, sort.by, sort.order, filter.by])
 
   const handleClearTasks = () => setTasks([])
 
